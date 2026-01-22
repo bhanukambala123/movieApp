@@ -38,4 +38,7 @@ app.delete('/api/bookings/:id', authenticateUser, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
