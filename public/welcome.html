@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      background-image: url('/logos/movie.png');
+      background-attachment: fixed;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeInText 2s ease-out 1s forwards;
+    }
+
+    #loginBtn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeInButton 0.6s ease-out 3s forwards;
+    }
+
+    @keyframes zoomFade {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(2); opacity: 1; }
+    }
+
+    @keyframes fadeInText {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInButton {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo"></div>
+  <h1>🎬 Welcome To Bappam Tickets 🎟️</h1>
+  <button id="loginBtn" onclick="goToLogin()">Login</button>
+
+  <script>
+    function goToLogin() {
+      window.location.href = '/login.html';
+    }
+  </script>
+</body>
+</html>

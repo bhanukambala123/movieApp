@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Booked Tickets</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f0d0d;
+      background-image: url('/logos/movie.png');
+      background-attachment: fixed;
+      padding: 20px;
+    }
+    .ticket {
+      background: rgb(60, 49, 107);
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .ticket img {
+      width: 200px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      background: #cd080f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .top-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .poster-small {
+  width: 130px;       /* ✅ scaled-down width */
+  height: auto;       /* ✅ keeps aspect ratio */
+  object-fit: contain; /* ✅ shows full image without cropping */
+  border-radius: 4px;  /* optional: soft corners */
+}
+  </style>
+  <script>
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login.html';
+    }
+
+    function goToBookings() {
+      window.location.href = '/bookings.html';
+    }
+
+    async function loadMyTickets() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/bookings/my-bookings', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const bookings = await res.json();
+      const container = document.getElementById('myTickets');
+      container.innerHTML = '';
+
+      bookings.forEach(b => {
+        const posterPath = `/logos/${b.movie.toLowerCase().replace(/\s+/g, '-')}.png`;
+        const card = document.createElement('div');
+        card.className = 'ticket';
+        card.innerHTML = `
+          <img src="${posterPath}" alt="${b.movie}" class="passport-poster" />
+          <h3 style="color: white">🎬 ${b.movie}</h3>
+          <p style="color:#a98b8b">Seat: ${b.seat}</p>
+          <p style="color:#a98b8b">Booked At: ${new Date(b.bookedAt).toLocaleString()}</p>
+          <button onclick="cancelBooking('${b._id}')" style="
+            margin-top: 10px;
+            background-color: #cd080f;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+          ">Cancel</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function cancelBooking(bookingId) {
+      if (!confirm("Are you sure you want to cancel this ticket?")) return;
+
+      fetch(`/api/bookings/${bookingId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then(res => {
+        if (res.ok) {
+          alert("Booking cancelled successfully.");
+          location.reload();
+        } else {
+          alert("Failed to cancel booking.");
+        }
+      })
+      .catch(err => {
+        console.error("Error cancelling booking:", err);
+        alert("Something went wrong.");
+      });
+    }
+
+    window.onload = loadMyTickets;
+  </script>
+</head>
+<body>
+  <div class="top-buttons">
+    <button onclick="goToBookings()">My Bookings</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <h1 style="color:#a98b8b">🎟️ My Booked Tickets</h1>
+  <div id="myTickets"></div>
+  <button onclick="window.location.href='/movies.html'">Back to Booking</button>
+</body>
+</html>
