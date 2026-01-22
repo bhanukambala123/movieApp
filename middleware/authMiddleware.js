@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+app.use(cors());
 function authenticateUser(req, res, next) {
   const authHeader = req.headers['authorization'];
 
