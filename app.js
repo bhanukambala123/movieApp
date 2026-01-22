@@ -1,4 +1,5 @@
 const authenticateUser = require('./middleware/authMiddleware'); // ✅ Adjust path if it's in /middleware
+const cors = require("cors");
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
